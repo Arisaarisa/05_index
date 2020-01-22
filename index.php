@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $sql = "insert into plans (title, dua_date, created_at, updated_at) values (:title, :dua_date, now(), now())";
 
+    $stmt = $dbh->prepare($sql);
     $stmt->bindParam(":title", $title);
     $stmt->bindParam(":dua_date", $dua_date);
     $stmt->execute();
@@ -68,49 +69,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h2>未完達成</h2>
   <ul>
     <?php
-    $sql = "select * from plans order by dua_date asc";
-    $stmt = $dbh->prepare($sql);
+    $sql2 = "select * from plans order by dua_date asc";
+    $stmt = $dbh->prepare($sql2);
     $stmt->execute();
     $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    <?php if (date('Y-m-d') < strtotime('dua_date')) { ?>
-      <?php foreach ($plans as $plan) : ?>
-        <?php if ($plan['status'] == 'notyet') : ?>
+    <?php foreach ($plans as $plan) : ?>
+      <?php if ($plan['status'] == 'notyet') : ?>
+        <?php date_default_timezone_set('Asia/Tokyo'); 
+          $now = date('Ymd');
+        ?>
+        <?php if ($now == $plan['dua_date']) { ?>
+          <li class="expired">
+            <!-- タスク完了のリンクを追記 -->
+            <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
+            <!-- 編集用のリンクを追記 -->
+            <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
+            <?php echo h($plan['title'] . $plan['dua_date']); ?>
+          </li>
+        <?php } else { ?>
           <li>
             <!-- タスク完了のリンクを追記 -->
             <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
             <!-- 編集用のリンクを追記 -->
             <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
-            <?php echo h($plan['title']); ?>
+            <?php echo h($plan['title']. '  '. $plan['dua_date']); ?>
           </li>
-        <?php endif; ?>
-      <?php endforeach; ?>
+        <?php } ?>
+      <?php endif; ?>
+    <?php endforeach; ?>
   </ul>
-<?php } else { ?>
-  <?php foreach ($plans as $plan) : ?>
-    <?php if ($plan['status'] == 'notyet') : ?>
-      <li class="expired">
-        <!-- タスク完了のリンクを追記 -->
-        <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
-        <!-- 編集用のリンクを追記 -->
-        <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
-        <?php echo h($plan['title']); ?>
-      </li>
-    <?php endif; ?>
-  <?php endforeach; ?>
-<?php } ?>
-<hr>
 
-<h2>達成済み</h2>
-<ul>
-  <?php foreach ($plans as $plan) : ?>
-    <?php if ($plan['status'] == 'done') : ?>
-      <li>
-        <?php echo h($plan['title']); ?>
-      </li>
-    <?php endif; ?>
-  <?php endforeach; ?>
-</ul>
+  <hr>
+
+  <h2>達成済み</h2>
+  <ul>
+    <?php foreach ($plans as $plan) : ?>
+      <?php if ($plan['status'] == 'done') : ?>
+        <li>
+          <?php echo h($plan['title']); ?>
+        </li>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </ul>
 
 </body>
 
