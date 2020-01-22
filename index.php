@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
   </p>
 
-  <h2>未完達成</h2>
+  <h2>未達成</h2>
   <ul>
     <?php
     $sql2 = "select * from plans order by dua_date asc";
@@ -76,10 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
     <?php foreach ($plans as $plan) : ?>
       <?php if ($plan['status'] == 'notyet') : ?>
-        <?php date_default_timezone_set('Asia/Tokyo'); 
-          $now = date('Ymd');
-        ?>
-        <?php if ($now == $plan['dua_date']) { ?>
+        <?php if (date('Y-m-d') >= $plan['dua_date']) : ?>
           <li class="expired">
             <!-- タスク完了のリンクを追記 -->
             <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
@@ -87,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
             <?php echo h($plan['title'] . $plan['dua_date']); ?>
           </li>
-        <?php } else { ?>
+        <?php  else : ?>
           <li>
             <!-- タスク完了のリンクを追記 -->
             <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
@@ -95,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
             <?php echo h($plan['title']. '  '. $plan['dua_date']); ?>
           </li>
-        <?php } ?>
+        <?php endif; ?>
       <?php endif; ?>
     <?php endforeach; ?>
   </ul>
