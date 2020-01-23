@@ -71,7 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="dua_date">期限日:</label>
       <input type="date" name="dua_date" value="dua_date">
       <input type="submit" value="編集">
-      <span style="color:red;"><?php echo h($errors['title']); ?></span>
+      <span style="color:red;">
+        <?php foreach ($complete_plans as $plan) : ?>
+          <ol>
+            <?php echo h($errors['title']); ?>
+            <br>
+            <?php echo h($errors['due_date']); ?>
+          </ol>
+          <?php break; ?>
+        <?php endforeach; ?>
+      </span>
     </form>
   </p>
 </body>
