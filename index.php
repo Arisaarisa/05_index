@@ -89,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
         <!-- 編集用のリンクを追記 -->
         <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
-        <?php date_default_timezone_set('Asia/Tokyo');?>
         <?php echo h($plan['title'] . date('Y/m/d', strtotime($plan['due_date']))); ?>
         </li>
       <?php endforeach; ?>
