@@ -10,11 +10,13 @@ $sql1 = "select * from plans where status = 'notyet' order by due_date asc";
 $stmt = $dbh->prepare($sql1);
 $stmt->execute();
 $incomplete_plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // 完了レコードの取得
 $sql2 = "select * from plans where status = 'done' order by due_date desc ";
 $stmt = $dbh->prepare($sql2);
 $stmt->execute();
 $complete_plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // 新規タスク追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // フォームに入力されたデータの受け取り
@@ -66,14 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <input type="submit" value="追加">
       <!-- ★ここはerrosにdue_dateも入ってくるので、foreachで回す -->
       <span style="color:red;">
-        <?php foreach ($complete_plans as $plan) : ?>
-          <ol>
-            <?php echo h($errors['title']); ?>
-            <br>
-            <?php echo h($errors['due_date']); ?>
-          </ol>
-        <?php break; ?>
-        <?php endforeach; ?>
+        <ul>
+          <?php foreach ($errors as $key => $value) : ?>
+            <li><?php echo h($value); ?></li>
+          <?php endforeach; ?>
+        </ul>
       </span>
     </form>
   </p>
@@ -82,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php foreach ($complete_plans as $plan) : ?>
       <?php if (date('Y-m-d') > $plan['due_date']) : ?>
         <li class="expired">
-        <?php else : ?>
+      <?php else : ?>
         <li>
         <?php endif; ?>
         <!-- タスク完了のリンクを追記 -->
