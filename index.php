@@ -2,6 +2,10 @@
 // 設定ファイルと関数ファイルを読み込む
 require_once('config.php');
 require_once('functions.php');
+
+
+$errors = array();
+
 // DBに接続
 $dbh = connectDb(); // 特にエラー表示がなければOK
 // 未完了レコードの取得
@@ -23,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = $_POST['title'];
   $due_date = $_POST['due_date'];
   // エラーチェック用の配列
-  $errors = array();
   // バリデーション
   if ($title == '') {
     $errors['title'] = 'タスク名を入力してください';
@@ -67,12 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <input type="submit" value="追加">
       <!-- ★ここはerrosにdue_dateも入ってくるので、foreachで回す -->
-      <?php if (count($errors) > 0) ; ?>
+      <?php if (count($errors) > 0) : ?>
         <ul style="color:red;">
           <?php foreach ($errors as $key => $value) : ?>
             <li><?php echo h($value); ?></li>
-          <?php endforeach; ?>
+            <?php endforeach; ?>
         </ul>
+      <?php endif; ?>
     </form>
   </p>
   <h2>未達成</h2>
@@ -80,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php foreach ($complete_plans as $plan) : ?>
       <?php if (date('Y-m-d') >= $plan['due_date']) : ?>
         <li class="expired">
-      <?php else : ?>
+        <?php else : ?>
         <li>
         <?php endif; ?>
         <!-- タスク完了のリンクを追記 -->

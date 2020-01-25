@@ -3,6 +3,8 @@
 require_once('config.php');
 require_once('functions.php');
 
+$errors = array();
+
 // 受け取ったレコードのID
 $id = $_GET['id'];
 
@@ -26,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $dua_date = $_POST['dua_date'];
 
   // エラーチェック用の配列
-  $errors = array();
 
   // バリデーション
   if ($title == '') {
@@ -71,12 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="dua_date">期限日:</label>
       <input type="date" name="dua_date" value="dua_date">
       <input type="submit" value="編集">
-      <?php if (count($errors) > 0) ; ?>
+      <?php if (count($errors) > 0) : ?>
         <ul style="color:red;">
           <?php foreach ($errors as $key => $value) : ?>
             <li><?php echo h($value); ?></li>
           <?php endforeach; ?>
         </ul>
+      <?php endif; ?>
     </form>
   </p>
 </body>
