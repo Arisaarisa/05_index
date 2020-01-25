@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </p>
   <h2>未達成</h2>
   <ul>
-    <?php foreach ($complete_plans as $plan) : ?>
+    <?php foreach ($incomplete_plans as $plan) : ?>
       <?php if (date('Y-m-d') >= $plan['due_date']) : ?>
         <li class="expired">
         <?php else : ?>
