@@ -67,19 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </label>
       <input type="submit" value="追加">
       <!-- ★ここはerrosにdue_dateも入ってくるので、foreachで回す -->
-      <span style="color:red;">
-        <ul>
+      <?php if (count($errors) > 0) ; ?>
+        <ul style="color:red;">
           <?php foreach ($errors as $key => $value) : ?>
             <li><?php echo h($value); ?></li>
           <?php endforeach; ?>
         </ul>
-      </span>
     </form>
   </p>
   <h2>未達成</h2>
   <ul>
     <?php foreach ($complete_plans as $plan) : ?>
-      <?php if (date('Y-m-d') > $plan['due_date']) : ?>
+      <?php if (date('Y-m-d') >= $plan['due_date']) : ?>
         <li class="expired">
       <?php else : ?>
         <li>
