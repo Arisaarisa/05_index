@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // バリデーション
   if ($title == '') {
-    $errors['title'] = 'タスク名を入力してください';
+    $errors['title'] = 'タスク名が変更されていません';
   }
 
   if ($due_date == $post['due_date']) {
