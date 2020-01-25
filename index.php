@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h1>学習管理アプリ</h1>
   <p>
     <form action="" method="post">
-      <label for="title">期限日:
+      <label for="title">学習内容:
         <input type="text" name="title">
       </label>
       <br>
@@ -89,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
         <!-- タスク完了のリンクを追記 -->
         <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
-        <!-- 編集用のリンクを追記 -->
+        <!-- 編集用のリンクを追記 --> 
         <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
-        <?php echo h($plan['title'] . date('Y/m/d', strtotime($plan['due_date']))); ?>
+        <?php echo h($plan['title'] .  ('･･･') . ('完了期限: ' . date('Y/m/d', strtotime($plan['due_date'])))); ?>
         </li>
       <?php endforeach; ?>
   </ul>
