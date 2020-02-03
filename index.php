@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h1>学習管理アプリ</h1>
   <p>
     <form action="" method="post">
-      <label for="title">学習内容:
+      <label for="title">目標内容:
         <input type="text" name="title">
       </label>
       <br>
@@ -84,16 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php foreach ($incomplete_plans as $plan) : ?>
       <?php if (date('Y-m-d') >= $plan['due_date']) : ?>
         <li class="expired">
-        <?php else : ?>
+      <?php else : ?>
         <li>
-        <?php endif; ?>
+      <?php endif; ?>
         <!-- タスク完了のリンクを追記 -->
         <a href="done.php?id=<?php echo h($plan['id']); ?>">[完了]</a>
         <!-- 編集用のリンクを追記 --> 
         <a href="edit.php?id=<?php echo h($plan['id']); ?>">[編集]</a>
         <?php echo h($plan['title'] .  ('･･･') . ('完了期限: ' . date('Y/m/d', strtotime($plan['due_date'])))); ?>
         </li>
-      <?php endforeach; ?>
+    <?php endforeach; ?>
   </ul>
   <hr>
   <h2>達成済み</h2>
